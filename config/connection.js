@@ -1,6 +1,7 @@
+const Sequelize = require('sequelize');
 require('dotenv').config();
 
-const Sequelize = require('sequelize');
+
 // we aren't putting this on HEroku, do i need to change this ???
 // does this need to be let ???
 const sequelize = process.env.JAWSDB_URL

@@ -11,20 +11,18 @@ Product.belongsTo(Category, {
 
 // Categories have many Products
 Category.hasMany(Product, {
-  foreignKey: 'catagory_id'
+  foreignKey: 'category_id'
 });
 
 // Products belongToMany Tags (through ProductTag) What is the difference between a Tag and ProductTag ???
 Product.belongsToMany(Tag, {
   through: ProductTag,
-  as: 'tagged',
   foreignKey: 'product_id'
 })
 
 // Tags belongToMany Products (through ProductTag) ???
 Tag.belongsToMany(Product, {
   through: ProductTag,
-  as: 'tagged',
   foreignKey: 'tag_id'
 })
 

@@ -1,3 +1,4 @@
+const sequelize = require('../../config/connection');
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
@@ -6,12 +7,46 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // get all products
 router.get('/', (req, res) => {
   // find all products
+  Product.findAll({
+    include: [
+      Category,
+    
+      {
+        model: Tag,
+        through: ProductTag
+      }
+      
+    ]
+  })
+    .then(dbProductData => res.json(dbProductData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
   // be sure to include its associated Category and Tag data
 });
 
 // get one product
 router.get('/:id', (req, res) => {
   // find a single product by its `id`
+  Product.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [
+      Category,
+
+      {
+        model: Tag,
+        through: ProductTag
+      }
+    ]
+  })
+    .then(dbProductData => res.json(dbProductData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
   // be sure to include its associated Category and Tag data
 });
 
@@ -47,13 +82,15 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product
+// update product ??? (I am getting a weird response,, the number of rows updated)
 router.put('/:id', (req, res) => {
   // update product data
+  // expects {id: '1', product_name: 'graphic-t', price: '30.00', stock: '100' category_id: '1'}
+  // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
   Product.update(req.body, {
     where: {
       id: req.params.id,
-    },
+    }
   })
     .then((product) => {
       // find all associated tags from ProductTag
@@ -91,6 +128,21 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
+  Product.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(dbProductData => {
+      if (!dbProductData) {
+        res.status(404).json({message: 'No product with that id'})
+      }
+      res.json(dbProductData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;

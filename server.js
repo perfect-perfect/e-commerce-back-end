@@ -1,11 +1,9 @@
 const express = require('express');
-
-// why is this here? i am blocking out because it seems out of place. ???
-// const { sequelize } = require('./models/Product'); 
+// import sequelize connection
+const sequelize = require('./config/connection');
 
 const routes = require('./routes');
-// import sequelize connection
-const sequelize = ('./config/connection');
+
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,7 +18,3 @@ sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
 });
 
-
-// app.listen(PORT, () => {
-//   console.log(`App listening on port ${PORT}!`);
-// });
