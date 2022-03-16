@@ -82,7 +82,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product ??? (I am getting a weird response,, the number of rows updated)
+// update product
 router.put('/:id', (req, res) => {
   // update product data
   // expects {id: '1', product_name: 'graphic-t', price: '30.00', stock: '100' category_id: '1'}
